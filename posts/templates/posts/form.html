@@ -1,0 +1,27 @@
+{%extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+{% if request.resolver_match.url_name == 'create' %}
+<h1>NEW POST</h1>
+{% else %}
+<h1>EDIT</h1>
+{% endif %}
+<!--{{ post_form }}-->
+<form action="" method='POST' enctype="multipart/form-data">
+    <!--이미지 받으려면 enctype 필요함-->
+    {% csrf_token %}
+    {% bootstrap_form post_form %} 
+    {% buttons %}
+     <!--<button type="submit" class="btn btn-primary">Submit</button>-->
+     <!--<button type="reset" class="btn btn-outline-primary">Cancel</button>-->
+     <div class="d-flex justify-content-end">
+    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+    <button type="reset" class="btn btn-light btn-sm">Cancel</button>
+    </div>
+     
+    {% endbuttons %}
+    
+</form>
+<a href="{% url 'posts:list' %}" class="btn btn-outline-secondary btn-sm">BACK</a>
+{% endblock %}
+

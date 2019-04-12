@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>LIST</h1>
+
+{% for post in posts %}
+<!--하나의 게시글을 뜻하는 카드를 의미함 -->
+{% include 'posts/_post.html' %} 
+{% endfor %}
+
+
+{% endblock %}

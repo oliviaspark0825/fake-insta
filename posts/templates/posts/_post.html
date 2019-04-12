@@ -1,0 +1,16 @@
+<div class="card" style="width: 18rem;">
+    {% if post.img %}
+  <img src="{{ post.img.url }}" class="card-img-top" alt="{{ post.img }}">
+  {% else %}
+  <img src="#" class="card-img-top" alt="NO_IMAGE">
+  {% endif %}
+  <div class="card-body">
+    <p class="card-text">{{ post.content }}</p>
+    <a href="{% url 'posts:update' post.pk %}" class="btn btn-success">수정</a>
+    <form action="{% url 'posts:delete' post.pk %}" method='POST' style="display:inline; ">
+        {% csrf_token %}
+        <input type="submit" value="삭제" class="btn btn-danger">
+    </form>
+  </div>
+</div>
+<!--list.html의 for 문 안에 post 가 있기 때문에-->

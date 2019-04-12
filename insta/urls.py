@@ -15,8 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+# 이미지를 쓰기 위해서는
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('posts/', include(('posts.urls'))),
     path('admin/', admin.site.urls),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# 실제 파일 경로 
