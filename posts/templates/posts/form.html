@@ -11,6 +11,9 @@
     <!--이미지 받으려면 enctype 필요함-->
     {% csrf_token %}
     {% bootstrap_form post_form %} 
+    {% if image_form %}
+     {% bootstrap_form image_form show_label=False %} 
+    {% endif %}
     {% buttons %}
      <!--<button type="submit" class="btn btn-primary">Submit</button>-->
      <!--<button type="reset" class="btn btn-outline-primary">Cancel</button>-->
