@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-center">{{ people.username }}'s Profile</h1>
+<div>
+<div class="jumbotron jumbotron-fluid">
+    <div class="d-flex justify-content-center">
+        <div>
+            <h1 class="display-4">{{ people.profile.nickname }}</h1> 
+            <!--프로필의 닉네임-->
+            <p class="lead">{{ people.profile.introduction }}</p>
+        </div>
+  </div>
+</div>
+<div class="">
+    <a href="{% url 'accounts:update' %}" class="btn btn-primary btn-sm">회원정보수정</a>
+    <a href="{% url 'accounts:profile_update' %}" class="btn btn-success btn-sm">프로필 수정</a>
+    <a href="{% url 'accounts:password' %}" class="btn btn-danger btn-sm">비밀번호수정</a>
+</div>
+    
+<!--<form style="display: inline;" action="{% url 'accounts:delete' %}" method="POST">-->
+<!--       {% csrf_token %}-->
+<!--       <button class="btn btn-danger" type="submit">회원 탈퇴</button>-->
+<!--   </form>-->
+   
+</div>
+
+
+
+
+
+<h3 class="text-center">내가 작성한 글</h3>
+<div class="row">
+    {% for post in people.post_set.all|dictsortreversed:"pk" %}
+    <div class="col-4 my-2">
+        <div class="card">
+            <img src="{{ post.image_set.first.file.url }}" class="d-block w-100" alt="{{ post.image_set.first.file }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.content }}</h5>
+                <p class="card-text">{{ post.like_users.count }} 명이 좋아합니다.</p>
+                <p class="card-text">{{ post.comment_set.count }} 개의 댓글.</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<hr>
+<hr>
+<h3 class="text-center">내가 작성한 댓글</h3>
+<div class="row">
+    {% for comment in people.comment_set.all|dictsortreversed:"pk" %}
+    <div class="col-12 my-2">
+        <div class="card">
+            <div class="card-body">
+                <blockquote class="blockquote">
+                    <p class="mb-0">{{ comment.post }}</p>
+                    <footer class="blockquote-footer">{{ comment }}</footer>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

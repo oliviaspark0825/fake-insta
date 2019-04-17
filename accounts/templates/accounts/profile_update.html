@@ -1,0 +1,23 @@
+{%extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+
+<h1>회원정보수정</h1>
+
+<form action="" method='POST' >
+    <!--이미지 받으려면 enctype 필요함-->
+    {% csrf_token %}
+    {% bootstrap_form profile_form %} 
+    {% buttons submit='수정' reset='cancel' %}
+     
+    {% endbuttons %}
+    
+</form>
+<hr>
+<form action="{% url 'accounts:delete' %}" method="POST" onsubmit="return confirm('R U SURE?');">
+    {% csrf_token %}
+    <a href="{% url 'people' user.username %}" class="btn btn-info">Back</a>
+    <button type="submit" class="btn btn-danger">회원탈퇴</button>
+</form>
+{% endblock %}
+

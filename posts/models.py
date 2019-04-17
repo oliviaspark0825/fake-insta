@@ -1,15 +1,28 @@
 from django.db import models
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
+from django.conf import settings
 # setting 끝나면 models하기
 # Create your models here.
 class Post(models.Model):
-    content = models.TextField()
     # img = models.ImageField(blank=True)# 빈값으로도 들어갈 수 있게
-    
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.TextField()
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_posts', blank=True)
  
     def __str__(self):
         return self.content
+        
+class Comment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    content = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.content        
+        
+        
+        
 
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE) # 삭제되면 딸려있던 이미지도 삭제될 수 있도록
