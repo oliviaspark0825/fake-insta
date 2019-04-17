@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 # 유저와 
 class Profile(models.Model):
@@ -12,3 +13,9 @@ class Profile(models.Model):
     
     def __self__(self):
         return self.nickname
+
+# user는 custom 한 뒤에 사용해야 함
+class User(AbstractUser):
+    # 저 사람이 나를팔로우하는 과정은 FOLLOWING
+    followers = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name = 'followings')
+    

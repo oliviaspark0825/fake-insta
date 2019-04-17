@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>LIST</h1>
+<div class="d-inline-flex flex-wrap justify-content-center">
+    
+
+        {% for post in posts %}
+        <!--하나의 게시글을 뜻하는 카드를 의미함 -->
+        {% include 'posts/_post.html' %} {% endfor %}
+    
+
+</div>
+
+
+
+{% endblock %}
+

@@ -4,7 +4,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserChangeForm, ProfileForm
+from .forms import CustomUserChangeForm, ProfileForm, CustomUserCreationForm
 from django.views.decorators.http import require_POST
 from django.contrib.auth import update_session_auth_hash
 
@@ -16,13 +16,13 @@ def signup(request):
         return redirect('posts:list')
       
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             auth_login(request, user) 				# 1 ?? 
             return redirect('posts:list')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     context = {'form': form}
     return render(request, 'accounts/signup.html', context)
     
@@ -113,3 +113,20 @@ def profile_update(request):
     context = {'profile_form': profile_form,}
     
     return render(request,'accounts/profile_update.html', context)
+    
+    
+
+##### FOLLOW
+def follow(request,user_pk): # 누가 눌렀는지 알아야하니까
+    people = get_object_or_404(get_user_model(), pk=user_pk)
+    # people 이 팔로워하고 있는 모든 유저에 현재 접속유저가 있다면,
+    if request.user in people.followers.all():
+         # unfollow
+        people.followers.remove(request.user) # 요청한 유저를
+    #아님 
+    else:
+    #follow
+        people.followers.add(request.user)
+        
+    return redirect('people', people.username)
+    

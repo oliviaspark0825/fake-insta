@@ -1,27 +1,35 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <h1 class="text-center">{{ people.username }}'s Profile</h1>
 <div>
-<div class="jumbotron jumbotron-fluid">
-    <div class="d-flex justify-content-center">
-        <div>
-            <h1 class="display-4">{{ people.profile.nickname }}</h1> 
-            <!--프로필의 닉네임-->
-            <p class="lead">{{ people.profile.introduction }}</p>
+    <div class="jumbotron jumbotron-fluid text-center ">
+        <div class="d-flex justify-content-center">
+            <div class="container">
+                <h1 class="display-4">{{ people.profile.nickname }}</h1>
+                <!--프로필의 닉네임-->
+                <p class="lead">{{ people.profile.introduction }}</p>
+                <!--follow 니 프로필이면 안뜨고-->
+                 <hr class="border-white my-4">
+                <p class="lead">팔로잉: {{ people.followings.count }} / 팔로워 {{ people.followers.count }}</p>
+               
+                
+                {% if user != people %} {% if user in people.followers.all %}
+                <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-outline-primary">unfollow</a> {% else %}
+                <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-primary">follow</a> {% endif %} {% endif %}
+
+            </div>
         </div>
-  </div>
-</div>
-<div class="">
-    <a href="{% url 'accounts:update' %}" class="btn btn-primary btn-sm">회원정보수정</a>
-    <a href="{% url 'accounts:profile_update' %}" class="btn btn-success btn-sm">프로필 수정</a>
-    <a href="{% url 'accounts:password' %}" class="btn btn-danger btn-sm">비밀번호수정</a>
-</div>
-    
-<!--<form style="display: inline;" action="{% url 'accounts:delete' %}" method="POST">-->
-<!--       {% csrf_token %}-->
-<!--       <button class="btn btn-danger" type="submit">회원 탈퇴</button>-->
-<!--   </form>-->
-   
+    </div>
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'accounts:update' %}" class="btn btn-primary btn-sm">회원정보수정</a>
+        <a href="{% url 'accounts:profile_update' %}" class="btn btn-success btn-sm">프로필 수정</a>
+        <a href="{% url 'accounts:password' %}" class="btn btn-danger btn-sm">비밀번호수정</a>
+    </div>
+
+    <!--<form style="display: inline;" action="{% url 'accounts:delete' %}" method="POST">-->
+    <!--       {% csrf_token %}-->
+    <!--       <button class="btn btn-danger" type="submit">회원 탈퇴</button>-->
+    <!--   </form>-->
+
 </div>
 
 

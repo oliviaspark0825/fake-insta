@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'bootstrap4',
     'imagekit',
+    'django_extensions',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -130,3 +132,5 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # 베이스 디렉토리--- insta_project 다음에 미디어라는 폴더를 넣을거고 거기에다가 집어넣을거임 
+AUTH_USER_MODEL = 'accounts.User'
+# 직접 만든거를 쓰겠다 기존 user 모델을 오버라이드
