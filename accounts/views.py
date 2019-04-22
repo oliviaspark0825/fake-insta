@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import CustomUserChangeForm, ProfileForm, CustomUserCreationForm
 from django.views.decorators.http import require_POST
 from django.contrib.auth import update_session_auth_hash
+from .models import Profile
 
 ############################ signup ################################
 
@@ -103,6 +104,7 @@ def password(request):
 ###### profile
 @login_required
 def profile_update(request):
+    profile = Profile.objects.get_or_create(user=request.user)
     if request.method == 'POST':
         profile_form = ProfileForm(request.POST, instance=request.user.profile)
         if profile_form.is_valid():

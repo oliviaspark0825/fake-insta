@@ -31,19 +31,26 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'posts.apps.PostsConfig',
     'accounts.apps.AccountsConfig',
     'bootstrap4',
     'imagekit',
     'django_extensions',
-    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'allauth.socialaccount.providers.kakao',
 ]
+
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -72,6 +79,16 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    # 'allauth.account.auth_backends.AuthenticationBackend',
+
+)
+
 
 WSGI_APPLICATION = 'insta.wsgi.application'
 
@@ -134,3 +151,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # 베이스 디렉토리--- insta_project 다음에 미디어라는 폴더를 넣을거고 거기에다가 집어넣을거임 
 AUTH_USER_MODEL = 'accounts.User'
 # 직접 만든거를 쓰겠다 기존 user 모델을 오버라이드
+LOGIN_REDIRECT_URL = 'posts:list'
+# 로그인할때 넘어가게

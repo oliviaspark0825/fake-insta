@@ -8,6 +8,7 @@ from itertools import chain
 
 # Create your views here.
 ####################     index/ READ     ###########################
+@login_required
 def list(request):
    #1.
     # followings = request.user.followings.all()

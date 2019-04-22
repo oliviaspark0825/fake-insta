@@ -13,4 +13,4 @@ def hashtag_link(post):
         content = content.replace(hashtag.content, f'<a href="/posts/hashtag/{ hashtag.pk }/">{ hashtag.content }</a>')    
         # content = content.replace(f'{hashtag.content}', f'<a href="/posts/hashtag/{ hashtag.id }/">{ hashtag.content }</a>')
     return content
-     
+
