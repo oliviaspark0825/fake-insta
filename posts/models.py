@@ -4,12 +4,23 @@ from imagekit.processors import ResizeToFill
 from django.conf import settings
 # setting 끝나면 models하기
 # Create your models here.
+
+# 처음에 안만들면 나중에 참조를 못하니까
+class Hashtag(models.Model):
+    content = models.TextField(unique=True)
+    
+    def __str__(self):
+        return self.content
+
+
 class Post(models.Model):
     # img = models.ImageField(blank=True)# 빈값으로도 들어갈 수 있게
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField()
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_posts', blank=True)
- 
+    hashtags = models.ManyToManyField(Hashtag, blank=True)
+    
+    
     def __str__(self):
         return self.content
         

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
-from .models import Post, Image
+from .models import Post, Image, Hashtag
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -37,7 +37,26 @@ def create(request):
             post = post_form.save(commit=False)			# 1
             post.user = request.user			# 2
             post.save()				# 3
-
+    
+    #hashtag - post.save()가 된 이후에 hashtag 코드가 와야함 post.content 를 보아야하니까, post가 완료된 content 정보가 필요함
+            # 1. 게시글을 순회하면서 띄어쓰기를 잘라야함
+            
+            
+            for word in post.content.split():
+            #   content_divide = post.content.split()
+            # 2. 다른 단어가 # 으로 시작하나?
+                if word[0] == '#':
+                # if word.startwith('#'):
+                # 기존에 있는 애라면 false 리턴
+                    hashtag, new = Hashtag.objects.get_or_create(content=word)
+                    # new가 트루이면, 새로 만들어진다
+                    post.hashtags.add(hashtag)
+            # 3. 이 해시태그가 기존 해시태그에 있는건지?
+            
+            
+            
+            
+    
             # post = post_form.save() # 게시글 내용 처리 끝
             # 이미지가 여러개이기 때문에 for 문을 돌려야하고, file 하나하나 돌면서 검증해야 함
             for image in request.FILES.getlist('file'):
@@ -76,7 +95,16 @@ def update(request, post_pk): # 어떤 글을 수정할지 결정해야하니까
          
          
          if post_form.is_valid():
-             post_form.save()
+             post = post_form.save()
+             # hashtag update
+             post.hashtags.clear()
+             for word in post.content.split():
+                 if word.startswith("#"):
+                    hashtag, new = Hashtag.objects.get_or_create(content=word)
+                    # new가 트루이면, 새로 만들어진다
+                    post.hashtags.add(hashtag)
+                     
+             
              return redirect('posts:list')
     else:
         post_form = PostForm(instance=post) # 이렇게 값을 채워넣어야 값이 존재
@@ -148,3 +176,15 @@ def explore(request):
     }
     return render(request, 'posts/explore.html', context)
     
+    
+
+######################### hashtag  #################33333
+def hashtag(request, hash_pk):
+    # 해시태그 가져오고
+    hashtag = get_object_or_404(Hashtag, pk = hash_pk)
+    posts = hashtag.post_set.order_by('-pk')
+    context = {
+        'hashtag':hashtag,
+        'posts': posts,
+    }
+    return render(request, 'posts/hashtag.html', context)
